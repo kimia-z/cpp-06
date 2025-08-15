@@ -3,14 +3,16 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
+
 
 class ScalarConverter
 {
 public:
 	ScalarConverter();
 	~ScalarConverter();
-	//ScalarConverter(const ScalarConverter &src);
-	//ScalarConverter &operator=(const ScalarConverter &src);
+	ScalarConverter(const ScalarConverter &src);
+	ScalarConverter &operator=(const ScalarConverter &src);
 
 	static void	convert(const std::string &literal);
 };

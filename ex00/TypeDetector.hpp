@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-enum type {T_CHAR, T_INT, T_FLOAT, T_DOUBLE, T_INVALID};
+enum type {T_CHAR, T_INT, T_FLOAT, T_DOUBLE, T_FLOAT_SPECIAL, T_DOUBLE_SPECIAL, T_INVALID};
 
 
 class TypeDetector
@@ -12,8 +12,8 @@ class TypeDetector
 public:
 	TypeDetector();
 	~TypeDetector();
-	//TypeDetector(const TypeDetector &src);
-	//TypeDetector &operator=(const TypeDetector &src);
+	TypeDetector(const TypeDetector &src);
+	TypeDetector &operator=(const TypeDetector &src);
 
 	static bool	isChar(const std::string &literal);
 	static bool	isInt(const std::string &literal);

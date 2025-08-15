@@ -7,10 +7,15 @@ TypeDetector::TypeDetector()
 {}
 TypeDetector::~TypeDetector()
 {}
-// TypeDetector::TypeDetector(const TypeDetector &src)
-// {}
-// TypeDetector &TypeDetector::operator=(const TypeDetector &src)
-// {}
+TypeDetector::TypeDetector(const TypeDetector &src)
+{
+	*this = src;
+}
+TypeDetector &TypeDetector::operator=(const TypeDetector &src)
+{
+	(void)src;
+	return *this;
+}
 
 bool	TypeDetector::isDisplayable(char c)
 {
@@ -126,8 +131,8 @@ bool	TypeDetector::isSpecialDouble(const std::string &literal)
 }
 type	TypeDetector::getType(const std::string &literal)
 {
-	if (isSpecialFloat(literal)) return (T_FLOAT);
-	if (isSpecialDouble(literal)) return (T_DOUBLE);
+	if (isSpecialFloat(literal)) return (T_FLOAT_SPECIAL);
+	if (isSpecialDouble(literal)) return (T_DOUBLE_SPECIAL);
 	if (isChar(literal)) return (T_CHAR);
 	if (isInt(literal)) return (T_INT);
 	if (isFloat(literal)) return (T_FLOAT);

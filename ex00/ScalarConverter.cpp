@@ -5,10 +5,15 @@
 ScalarConverter::ScalarConverter()
 {}
 
-// ScalarConverter::ScalarConverter(const ScalarConverter &src)
-// {}
-// ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src)
-// {}
+ScalarConverter::ScalarConverter(const ScalarConverter &src)
+{
+	*this = src;
+}
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src)
+{
+	(void)src;
+	return *this;
+}
 
 ScalarConverter::~ScalarConverter()
 {}
@@ -21,6 +26,7 @@ void	ScalarConverter::convert(const std::string &literal)
 	int iVal;
 	float fVal;
 	double dVal;
+	bool impossible = false;
 
 	try{
 		switch(typeOfString)
@@ -30,21 +36,35 @@ void	ScalarConverter::convert(const std::string &literal)
 				iVal = static_cast<int>(cVal);
 				fVal = static_cast<float>(cVal);
 				dVal = static_cast<double>(cVal);
+				break;
 			case T_INT:
 				iVal = std::stoi(literal);
 				cVal = static_cast<char>(iVal);
 				fVal = static_cast<float>(iVal);
 				dVal = static_cast<double>(iVal);
+				break;
 			case T_FLOAT:
 				fVal = std::stof(literal);
 				cVal = static_cast<char>(fVal);
 				iVal = static_cast<int>(fVal);
 				dVal = static_cast<double>(fVal);
+				break;
 			case T_DOUBLE:
 				dVal = std::stod(literal);
 				cVal = static_cast<char>(dVal);
 				iVal = static_cast<int>(dVal);
 				fVal = static_cast<float>(dVal);
+				break;
+			case T_FLOAT_SPECIAL:
+				fVal = std::stof(literal);
+				dVal = static_cast<double>(fVal);
+				impossible = true;
+				break;
+			case T_DOUBLE_SPECIAL:
+				dVal = std::stod(literal);
+				fVal = static_cast<float>(dVal);
+				impossible = true;
+				break;
 			default:
 				break;
 		}
@@ -59,12 +79,14 @@ void	ScalarConverter::convert(const std::string &literal)
 
 	// Print:
 	std::cout << "char: ";
-	if (typeOfString == T_INVALID || !TypeDetector::isDisplayable(cVal))
+	if (typeOfString == T_INVALID || impossible || iVal < 0 || iVal > 127)
+		std::cout << "impossible\n";
+	else if (!TypeDetector::isDisplayable(cVal))
 		std::cout << "Non displayable\n";
 	else
 		std::cout << "'" << cVal << "'\n";
 	std::cout << "int: ";
-	if (typeOfString == T_INVALID)
+	if (typeOfString == T_INVALID || impossible)
 		std::cout << "impossible\n";
 	else
 		std::cout << iVal << '\n';
@@ -72,10 +94,16 @@ void	ScalarConverter::convert(const std::string &literal)
 	if (typeOfString == T_INVALID)
 		std::cout << "impossible\n";
 	else
-		std::cout << fVal << 'f' << '\n';
+	{
+		int precision = (fVal == static_cast<int>(fVal)? 1 : 2);
+		std::cout << std::fixed << std::setprecision(precision) << fVal << 'f' << '\n';
+	}
 	std::cout << "double: ";
 	if (typeOfString == T_INVALID)
 		std::cout << "impossible\n";
 	else
-		std::cout << dVal << '\n';
+	{
+		int precision = (dVal == static_cast<int>(dVal)? 1 : 2);
+		std::cout << std::fixed << std::setprecision(precision) << dVal << '\n';
+	}
 }
